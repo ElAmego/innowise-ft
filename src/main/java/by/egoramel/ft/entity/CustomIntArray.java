@@ -1,6 +1,7 @@
 package by.egoramel.ft.entity;
 
 import by.egoramel.ft.validator.CustomIntArrayValidator;
+import by.egoramel.ft.validator.impl.CustomIntArrayValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,28 +9,29 @@ import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class CustomIntArray {
-    private final int[] array;
     private final Logger logger = LogManager.getLogger(CustomIntArray.class);
+    private final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
+    private final int[] array;
 
-    protected CustomIntArray(final int size) {
+    public CustomIntArray(final int size) {
         logger.info("Successful CustomIntArray creation with size: {}", size);
         this.array = new int[size];
     }
 
-    protected CustomIntArray(final int[] initialArray) {
+    public CustomIntArray(final int[] initialArray) {
         logger.info("Successful CustomIntArray creation from array: {}", Arrays.toString(initialArray));
         this.array = Arrays.copyOf(initialArray, initialArray.length);
     }
 
     public int get(final int index) {
-        CustomIntArrayValidator.validateBounds(index, array.length);
+        customIntArrayValidator.validateBounds(index, array.length);
 
         logger.info("Successfully retrieved value by index: {}", index);
         return array[index];
     }
 
     public void set(final int index, final int value) {
-        CustomIntArrayValidator.validateBounds(index, array.length);
+        customIntArrayValidator.validateBounds(index, array.length);
 
         logger.info("Successfully set value by index: {}", index);
         array[index] = value;
