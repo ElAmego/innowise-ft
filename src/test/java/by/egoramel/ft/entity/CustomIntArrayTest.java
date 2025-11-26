@@ -1,5 +1,7 @@
 package by.egoramel.ft.entity;
 
+import by.egoramel.ft.factory.CustomIntArrayFactory;
+import by.egoramel.ft.factory.impl.CustomIntArrayFactoryImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,7 @@ class CustomIntArrayTest {
 
     @BeforeEach
     void setUp() {
+        customIntArrayFactory = new CustomIntArrayFactoryImpl();
     }
 
     @AfterEach
@@ -21,7 +24,7 @@ class CustomIntArrayTest {
     @Test
     @DisplayName("Should correctly set a value by the definite index.")
     void setValue() {
-        final CustomIntArray array = CustomIntArrayFactory.createWithSizeCustomIntArray(5);
+        final CustomIntArray array = customIntArrayFactory.createWithSizeCustomIntArray(5);
         final int expect = 501;
         final int index = 2;
 
@@ -35,7 +38,7 @@ class CustomIntArrayTest {
     @DisplayName("Should correctly get a value by the definite index.")
     void getValue() {
         final int[] initialArray = {22, 19, 0};
-        final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(initialArray);
+        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray);
         final int expect = 22;
 
         final int actual = array.get(0);
@@ -47,7 +50,7 @@ class CustomIntArrayTest {
     @DisplayName("Should correctly get a length of the array.")
     void getLength() {
         final int[] initialArray = {-5, 1};
-        final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(initialArray);
+        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray);
         final int expect = 2;
 
         final int actual = array.length();
