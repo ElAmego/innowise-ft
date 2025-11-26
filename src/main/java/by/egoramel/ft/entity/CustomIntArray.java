@@ -1,6 +1,6 @@
 package by.egoramel.ft.entity;
 
-import by.egoramel.ft.exception.CustomIntArrayException;
+import by.egoramel.ft.validator.CustomIntArrayValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,45 +12,24 @@ public class CustomIntArray {
     private final Logger logger = LogManager.getLogger(CustomIntArray.class);
 
     protected CustomIntArray(final int size) {
-        logger.debug("Creating CustomIntArray with size: {}", size);
-        if (size < 0) {
-            logger.error("Attempt to create CustomIntArray with incorrect size: {}", size);
-            throw new CustomIntArrayException("Array size cannot be negative: " + size);
-        }
-
         logger.info("Successful CustomIntArray creation with size: {}", size);
         this.array = new int[size];
     }
 
     protected CustomIntArray(final int[] initialArray) {
-        logger.debug("Creating CustomIntArray from array: {}", Arrays.toString(initialArray));
-
-        if (initialArray == null) {
-            logger.error("Attempt to create null CustomIntArray.");
-            throw new CustomIntArrayException("Array size cannot be null.");
-        }
-
         logger.info("Successful CustomIntArray creation from array: {}", Arrays.toString(initialArray));
         this.array = Arrays.copyOf(initialArray, initialArray.length);
     }
 
     public int get(final int index) {
-        logger.debug("Getting value by index: {}", index);
-        if (index >= array.length || index < 0) {
-            logger.error("Attempt to get value by incorrect index: {}", index);
-            throw new CustomIntArrayException("Index out of bound: " + index);
-        }
+        CustomIntArrayValidator.validateBounds(index, array.length);
 
         logger.info("Successfully retrieved value by index: {}", index);
         return array[index];
     }
 
     public void set(final int index, final int value) {
-        logger.debug("Setting value by index: {}", index);
-        if (index >= array.length || index < 0) {
-            logger.error("Attempt to set value by incorrect index: {}", index);
-            throw new CustomIntArrayException("Index out of bound: " + index);
-        }
+        CustomIntArrayValidator.validateBounds(index, array.length);
 
         logger.info("Successfully set value by index: {}", index);
         array[index] = value;

@@ -28,6 +28,7 @@ class CustomIntArrayServiceImplTest {
         final int[] testData = {4, 2, -5, 6, 0, 100, -10};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = 100;
+
         final int actual = customIntArrayService.getMax(array);
 
         assertEquals(expect, actual, "Max value should be 100");
@@ -39,6 +40,7 @@ class CustomIntArrayServiceImplTest {
         final int[] testData = {5, 6, 0, -99, -10};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = -99;
+
         final int actual = customIntArrayService.getMin(array);
 
         assertEquals(expect, actual, "Min value should be -99");
@@ -50,6 +52,7 @@ class CustomIntArrayServiceImplTest {
         final int[] testData = {-100, 100, 500, 0, 333, -332};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = 501;
+
         final int actual = customIntArrayService.getSum(array);
 
         assertEquals(expect, actual, "Sum should be 501");
@@ -62,6 +65,7 @@ class CustomIntArrayServiceImplTest {
         final int[] expect = {-10, -2, 5, 13, 22};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(testData);
         final CustomIntArray expectArray = CustomIntArrayFactory.createFromArrayCustomIntArray(expect);
+
         final CustomIntArray actual = customIntArrayService.bubbleSort(array);
 
         assertEquals(expectArray, actual, "Correct sort: [-10, -2, 5, 13, 22]");
@@ -74,6 +78,7 @@ class CustomIntArrayServiceImplTest {
         final int[] expect = {-5, 0, 6, 11, 23};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(testData);
         final CustomIntArray expectArray = CustomIntArrayFactory.createFromArrayCustomIntArray(expect);
+
         final CustomIntArray actual = customIntArrayService.selectionSort(array);
 
         assertEquals(expectArray, actual, "Correct sort: [-5, 0, 6, 11, 23]");
