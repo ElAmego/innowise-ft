@@ -1,8 +1,8 @@
 package by.egoramel.ft.service.impl;
 
 import by.egoramel.ft.entity.CustomIntArray;
-import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.service.CustomIntArrayService;
+import by.egoramel.ft.validator.CustomIntArrayValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +17,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
     public int getMin(final CustomIntArray customIntArray) {
         logger.debug("Attempt to find minimum value in array");
 
-        validateArray(customIntArray, getMinErrorMessage);
+        CustomIntArrayValidator.validateCustomIntArray(customIntArray, getMinErrorMessage);
 
         logger.debug("Starting minimum search in array of size: {}", customIntArray.length());
         int min = customIntArray.get(0);
@@ -40,7 +40,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
     public int getMax(final CustomIntArray customIntArray) {
         logger.debug("Attempt to find maximum value in array");
 
-        validateArray(customIntArray, getMaxErrorMessage);
+        CustomIntArrayValidator.validateCustomIntArray(customIntArray, getMaxErrorMessage);
 
         logger.debug("Starting maximum search in array of size: {}", customIntArray.length());
         int max = customIntArray.get(0);
@@ -64,7 +64,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
     public int getSum(final CustomIntArray customIntArray) {
         logger.debug("Attempt to get the sum of array values.");
 
-        validateArray(customIntArray, getSumErrorMessage);
+        CustomIntArrayValidator.validateCustomIntArray(customIntArray, getSumErrorMessage);
 
         int sum = 0;
         for (int i = 0; i < customIntArray.length(); i++) {
@@ -81,7 +81,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
     public CustomIntArray bubbleSort(final CustomIntArray customIntArray) {
         logger.debug("Starting bubble sort on array");
 
-        validateArray(customIntArray, sortErrorMessage);
+        CustomIntArrayValidator.validateCustomIntArray(customIntArray, sortErrorMessage);
 
         logger.debug("Bubble sort started on array of size: {}", customIntArray.length());
 
@@ -93,7 +93,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
                     int temp = customIntArray.get(j);
                     customIntArray.set(j, customIntArray.get(j + 1));
                     customIntArray.set(j + 1, temp);
-                    logger.trace("Swapped elements at indices {} and {}", i, j + 1);
+                    logger.trace("Swapped elements at indices {} and {}", j, j + 1);
                 }
             }
         }
@@ -106,7 +106,7 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
     public CustomIntArray selectionSort(final CustomIntArray customIntArray) {
         logger.debug("Starting selection sort on array");
 
-        validateArray(customIntArray, sortErrorMessage);
+        CustomIntArrayValidator.validateCustomIntArray(customIntArray, sortErrorMessage);
 
         logger.debug("Selection sort started on array of size: {}", customIntArray.length());
 
@@ -130,17 +130,5 @@ public final class CustomIntArrayServiceImpl implements CustomIntArrayService {
         }
         logger.info("Selection sort completed.");
         return customIntArray;
-    }
-
-    private void validateArray(final CustomIntArray customIntArray, final String message) {
-        if (customIntArray == null) {
-            logger.error("{} - array is null", message);
-            throw new CustomIntArrayException("Array is null.");
-        }
-
-        if (customIntArray.length() == 0) {
-            logger.error("{} - array is empty", message);
-            throw new CustomIntArrayException("Array is empty.");
-        }
     }
 }

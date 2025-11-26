@@ -22,6 +22,7 @@ class CustomIntArrayFactoryTest {
     void shouldCreateEmptyArray() {
         final CustomIntArray array = CustomIntArrayFactory.createEmptyCustomIntArray();
         final int expect = 0;
+
         final int actual = array.length();
 
         assertEquals(expect, actual, "Should be an empty array.");

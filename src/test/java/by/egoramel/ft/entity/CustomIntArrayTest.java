@@ -37,6 +37,7 @@ class CustomIntArrayTest {
         final int[] initialArray = {22, 19, 0};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(initialArray);
         final int expect = 22;
+
         final int actual = array.get(0);
 
         assertEquals(expect, actual, "The value should be equal 22.");
@@ -48,6 +49,7 @@ class CustomIntArrayTest {
         final int[] initialArray = {-5, 1};
         final CustomIntArray array = CustomIntArrayFactory.createFromArrayCustomIntArray(initialArray);
         final int expect = 2;
+
         final int actual = array.length();
 
         assertEquals(expect, actual, "The length should be equal 2.");
