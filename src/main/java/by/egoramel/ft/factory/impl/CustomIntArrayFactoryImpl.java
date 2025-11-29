@@ -1,11 +1,12 @@
 package by.egoramel.ft.factory.impl;
 
 import by.egoramel.ft.entity.CustomIntArray;
+import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.factory.CustomIntArrayFactory;
-import by.egoramel.ft.parser.DataParser;
-import by.egoramel.ft.parser.RowParser;
-import by.egoramel.ft.parser.impl.DataParserImpl;
-import by.egoramel.ft.parser.impl.RowParserImpl;
+import by.egoramel.ft.parser.ListParser;
+import by.egoramel.ft.parser.FileParser;
+import by.egoramel.ft.parser.impl.ListParserImpl;
+import by.egoramel.ft.parser.impl.FileParserImpl;
 import by.egoramel.ft.validator.CustomIntArrayValidator;
 import by.egoramel.ft.validator.impl.CustomIntArrayValidatorImpl;
 import org.apache.logging.log4j.LogManager;
@@ -16,41 +17,45 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
-    private static final Logger LOGGER = LogManager.getLogger(CustomIntArrayFactoryImpl.class);
-    private final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
-    private static final int EMPTY_ARRAY_SIZE = 0;
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    public CustomIntArray createEmptyCustomIntArray() {
-        LOGGER.debug("Attempt to create empty CustomIntArray.");
-        return new CustomIntArray(EMPTY_ARRAY_SIZE);
-    }
-
-    public CustomIntArray createWithSizeCustomIntArray(final int size) {
+    public CustomIntArray createWithSizeCustomIntArray(final int size) throws CustomIntArrayException {
         LOGGER.debug("Attempt to create CustomIntArray with size {}.", size);
-        customIntArrayValidator.validationOnNegativeSize(size);
+
+        final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
+        final boolean isValidate = customIntArrayValidator.minimumSizeValidation(size);
+
+        if (!isValidate) {
+            throw new CustomIntArrayException("Attempt to create an array with the size < 1.");
+        }
+
         return new CustomIntArray(size);
     }
 
-    public CustomIntArray createFromArrayCustomIntArray(final int[] initialArray) {
-        LOGGER.debug("Attempt to create CustomIntArray from {}.", Arrays.toString(initialArray));
-        customIntArrayValidator.validateArray(initialArray);
+    public CustomIntArray createFromArrayCustomIntArray(final int[] initialArray) throws CustomIntArrayException {
+        LOGGER.debug("Attempt to create a CustomIntArray from an array {}.", Arrays.toString(initialArray));
+
+        final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
+        final boolean isValidate = customIntArrayValidator.initialArrayValidation(initialArray);
+
+        if (!isValidate) {
+            throw new CustomIntArrayException("Attempt to create a CustomIntArray from an empty or null array.");
+        }
+
         return new CustomIntArray(initialArray);
     }
 
-    public CustomIntArray createFromFileCustomIntArray() {
+    public CustomIntArray createFromFileCustomIntArray() throws CustomIntArrayException {
         LOGGER.debug("Attempt to create CustomIntArray from a file.");
-        final RowParser rowParser = new RowParserImpl();
-        final List<String> stringList = rowParser.parseRow();
 
-        customIntArrayValidator.validateStringList(stringList);
+        final FileParser fileParser = new FileParserImpl();
+        final List<String> stringList = fileParser.parseRow();
+        final ListParser listParser = new ListParserImpl();
 
-        final DataParser dataParser = new DataParserImpl();
-        LOGGER.debug("Parsing data from string list.");
-        final int[] arrayFromFile = dataParser.parseData(stringList);
+        LOGGER.debug("Parsing data from a string list.");
+        final int[] arrayFromFile = listParser.parseData(stringList);
 
-        customIntArrayValidator.validateArray(arrayFromFile);
-
-        LOGGER.info("CustomIntArray created successfully from file. Array size: {}", arrayFromFile.length);
+        LOGGER.info("CustomIntArray created successfully from a file. Array size: {}", arrayFromFile.length);
 
         return new CustomIntArray(arrayFromFile);
     }
