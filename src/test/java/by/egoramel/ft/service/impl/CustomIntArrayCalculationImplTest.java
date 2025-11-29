@@ -1,9 +1,11 @@
 package by.egoramel.ft.service.impl;
 
 import by.egoramel.ft.entity.CustomIntArray;
+import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.factory.CustomIntArrayFactory;
 import by.egoramel.ft.factory.impl.CustomIntArrayFactoryImpl;
-import by.egoramel.ft.service.CustomIntArrayService;
+import by.egoramel.ft.service.CustomIntArrayCalculation;
+import by.egoramel.ft.service.CustomIntArraySort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +13,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CustomIntArrayServiceImplTest {
-    private CustomIntArrayService customIntArrayService;
+class CustomIntArrayCalculationImplTest {
+    private CustomIntArrayCalculation customIntArrayCalculation;
+    private CustomIntArraySort customIntArraySort;
     private CustomIntArrayFactory customIntArrayFactory;
 
     @BeforeEach
     void setUp() {
-        customIntArrayService = new CustomIntArrayServiceImpl();
+        customIntArrayCalculation = new CustomIntArrayCalculationImpl();
+        customIntArraySort = new CustomIntArraySortImpl();
         customIntArrayFactory = new CustomIntArrayFactoryImpl();
     }
 
@@ -27,62 +31,62 @@ class CustomIntArrayServiceImplTest {
 
     @Test
     @DisplayName("Should correctly calculate a max value for an array.")
-    void checkMax() {
+    void checkMax() throws CustomIntArrayException {
         final int[] testData = {4, 2, -5, 6, 0, 100, -10};
         final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = 100;
 
-        final int actual = customIntArrayService.getMax(array);
+        final int actual = customIntArrayCalculation.findMax(array);
 
         assertEquals(expect, actual, "Max value should be 100");
     }
 
     @Test
     @DisplayName("Should correctly calculate a min value for an array.")
-    void checkMin() {
+    void checkMin() throws CustomIntArrayException {
         final int[] testData = {5, 6, 0, -99, -10};
         final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = -99;
 
-        final int actual = customIntArrayService.getMin(array);
+        final int actual = customIntArrayCalculation.findMin(array);
 
         assertEquals(expect, actual, "Min value should be -99");
     }
 
     @Test
     @DisplayName("Should correctly calculate a min value for an array.")
-    void checkSum() {
+    void checkSum() throws CustomIntArrayException {
         final int[] testData = {-100, 100, 500, 0, 333, -332};
         final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData);
         final int expect = 501;
 
-        final int actual = customIntArrayService.getSum(array);
+        final int actual = customIntArrayCalculation.calculateSum(array);
 
         assertEquals(expect, actual, "Sum should be 501");
     }
 
     @Test
     @DisplayName("Should correctly sort an array by Bubble sort.")
-    void checkBubbleSort() {
+    void checkBubbleSort() throws CustomIntArrayException {
         final int[] testData = {-2, 5, -10, 22, 13};
         final int[] expect = {-10, -2, 5, 13, 22};
         final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData);
         final CustomIntArray expectArray = customIntArrayFactory.createFromArrayCustomIntArray(expect);
 
-        final CustomIntArray actual = customIntArrayService.bubbleSort(array);
+        final CustomIntArray actual = customIntArraySort.bubbleSort(array);
 
         assertEquals(expectArray, actual, "Correct sort: [-10, -2, 5, 13, 22]");
     }
 
     @Test
     @DisplayName("Should correctly sort an array by Selection sort sort.")
-    void checkSelectionSort() {
+    void checkSelectionSort() throws CustomIntArrayException {
         final int[] testData = {23, -5, 0, 11, 6};
         final int[] expect = {-5, 0, 6, 11, 23};
         final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData);
         final CustomIntArray expectArray = customIntArrayFactory.createFromArrayCustomIntArray(expect);
 
-        final CustomIntArray actual = customIntArrayService.selectionSort(array);
+        final CustomIntArray actual = customIntArraySort.selectionSort(array);
 
         assertEquals(expectArray, actual, "Correct sort: [-5, 0, 6, 11, 23]");
     }

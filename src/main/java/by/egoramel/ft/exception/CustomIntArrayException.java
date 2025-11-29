@@ -10,4 +10,7 @@ public final class CustomIntArrayException extends Exception {
     public CustomIntArrayException(final String message, final Throwable throwable) {
         super(message, throwable);
     }
+    public CustomIntArrayException(final Throwable throwable) {
+        super( throwable);
+    }
 }

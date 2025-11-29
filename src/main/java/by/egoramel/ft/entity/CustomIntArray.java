@@ -1,50 +1,57 @@
 package by.egoramel.ft.entity;
 
-import by.egoramel.ft.validator.CustomIntArrayValidator;
-import by.egoramel.ft.validator.impl.CustomIntArrayValidatorImpl;
+import by.egoramel.ft.exception.CustomIntArrayException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.StringJoiner;
 
 @SuppressWarnings("unused")
 public class CustomIntArray {
-    private final Logger logger = LogManager.getLogger(CustomIntArray.class);
-    private final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
+    private static final Logger LOGGER = LogManager.getLogger();
     private final int[] array;
 
     public CustomIntArray(final int size) {
-        logger.info("Successful CustomIntArray creation with size: {}", size);
+        LOGGER.info("Successful CustomIntArray creation with size: {}", size);
         this.array = new int[size];
     }
 
     public CustomIntArray(final int[] initialArray) {
-        logger.info("Successful CustomIntArray creation from array: {}", Arrays.toString(initialArray));
+        LOGGER.info("Successful CustomIntArray creation from array: {}", Arrays.toString(initialArray));
         this.array = Arrays.copyOf(initialArray, initialArray.length);
     }
 
-    public int get(final int index) {
-        customIntArrayValidator.validateBounds(index, array.length);
+    public int get(final int index) throws CustomIntArrayException {
+        final boolean isValid = boundsValidator(index, array.length);
 
-        logger.info("Successfully retrieved value by index: {}", index);
+        if (!isValid) {
+            throw new CustomIntArrayException("Index out of bound: " + index);
+        }
+
+        LOGGER.info("Successfully retrieved value by index: {}", index);
         return array[index];
     }
 
-    public void set(final int index, final int value) {
-        customIntArrayValidator.validateBounds(index, array.length);
+    public void set(final int index, final int value) throws CustomIntArrayException {
+        final boolean isValid = boundsValidator(index, array.length);
 
-        logger.info("Successfully set value by index: {}", index);
+        if (!isValid) {
+            throw new CustomIntArrayException("Index out of bound: " + index);
+        }
+
+        LOGGER.info("Successfully set value by index: {}", index);
         array[index] = value;
     }
 
     public int length() {
-        logger.info("Successfully retrieved CustomIntArray size.");
+        LOGGER.info("Successfully retrieved CustomIntArray size.");
         return array.length;
     }
 
     @Override
     public boolean equals(Object o) {
-        logger.debug("Comparing CustomIntArray with another object");
+        LOGGER.debug("Comparing CustomIntArray with another object");
         if (o == null || getClass() != o.getClass()) return false;
 
         final CustomIntArray that = (CustomIntArray) o;
@@ -53,16 +60,26 @@ public class CustomIntArray {
 
     @Override
     public int hashCode() {
-        logger.debug("Calculated hashCode.");
+        LOGGER.debug("Calculated hashCode.");
         return Arrays.hashCode(array);
     }
 
     @Override
     public String toString() {
-        logger.debug("Converting array to string.");
-        final StringBuilder sb = new StringBuilder("CustomIntArray{");
-        sb.append("array=").append(Arrays.toString(array));
-        sb.append('}');
-        return sb.toString();
+        return new StringJoiner(", ", CustomIntArray.class.getSimpleName() + "[", "]")
+                .add("array=" + Arrays.toString(array))
+                .toString();
+    }
+
+    private boolean boundsValidator (final int index, final int arrayLength) {
+        LOGGER.debug("Validating array bounds.");
+
+        int minIndex = 0;
+        if (index >= arrayLength || index < minIndex) {
+            LOGGER.error("Index out of bound: {}", index);
+            return false;
+        }
+
+        return true;
     }
 }
