@@ -19,7 +19,7 @@ import java.util.List;
 public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public CustomIntArray createWithSizeCustomIntArray(final int size) throws CustomIntArrayException {
+    public CustomIntArray createWithSizeCustomIntArray(final int size, final long id) throws CustomIntArrayException {
         LOGGER.debug("Attempt to create CustomIntArray with size {}.", size);
 
         final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
@@ -29,10 +29,11 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
             throw new CustomIntArrayException("Attempt to create an array with the size < 1.");
         }
 
-        return new CustomIntArray(size);
+        return new CustomIntArray(size, id);
     }
 
-    public CustomIntArray createFromArrayCustomIntArray(final int[] initialArray) throws CustomIntArrayException {
+    public CustomIntArray createFromArrayCustomIntArray(final int[] initialArray, final long id)
+            throws CustomIntArrayException {
         LOGGER.debug("Attempt to create a CustomIntArray from an array {}.", Arrays.toString(initialArray));
 
         final CustomIntArrayValidator customIntArrayValidator = new CustomIntArrayValidatorImpl();
@@ -42,10 +43,10 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
             throw new CustomIntArrayException("Attempt to create a CustomIntArray from an empty or null array.");
         }
 
-        return new CustomIntArray(initialArray);
+        return new CustomIntArray(initialArray, id);
     }
 
-    public CustomIntArray createFromFileCustomIntArray() throws CustomIntArrayException {
+    public CustomIntArray createFromFileCustomIntArray(final long id) throws CustomIntArrayException {
         LOGGER.debug("Attempt to create CustomIntArray from a file.");
 
         final FileParser fileParser = new FileParserImpl();
@@ -57,6 +58,6 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
 
         LOGGER.info("CustomIntArray created successfully from a file. Array size: {}", arrayFromFile.length);
 
-        return new CustomIntArray(arrayFromFile);
+        return new CustomIntArray(arrayFromFile, id);
     }
 }

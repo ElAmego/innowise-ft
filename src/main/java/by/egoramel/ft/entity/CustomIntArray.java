@@ -11,15 +11,18 @@ import java.util.StringJoiner;
 public class CustomIntArray {
     private static final Logger LOGGER = LogManager.getLogger();
     private final int[] array;
+    private final long id;
 
-    public CustomIntArray(final int size) {
+    public CustomIntArray(final int size, final long id) {
         LOGGER.info("Successful CustomIntArray creation with size: {}", size);
         this.array = new int[size];
+        this.id = id;
     }
 
-    public CustomIntArray(final int[] initialArray) {
+    public CustomIntArray(final int[] initialArray, final long id) {
         LOGGER.info("Successful CustomIntArray creation from array: {}", Arrays.toString(initialArray));
         this.array = Arrays.copyOf(initialArray, initialArray.length);
+        this.id = id;
     }
 
     public int get(final int index) throws CustomIntArrayException {
@@ -51,17 +54,16 @@ public class CustomIntArray {
 
     @Override
     public boolean equals(Object o) {
-        LOGGER.debug("Comparing CustomIntArray with another object");
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         final CustomIntArray that = (CustomIntArray) o;
-        return Arrays.equals(array, that.array);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        LOGGER.debug("Calculated hashCode.");
-        return Arrays.hashCode(array);
+        return Long.hashCode(id);
     }
 
     @Override
@@ -81,5 +83,13 @@ public class CustomIntArray {
         }
 
         return true;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int[] getArray() {
+        return array;
     }
 }
