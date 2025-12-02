@@ -11,7 +11,7 @@ public final class CustomIntArrayCalculationImpl implements CustomIntArrayCalcul
 
     @Override
     public int findMin(final CustomIntArray customIntArray) throws CustomIntArrayException {
-        LOGGER.debug("Attempt to find a minimum value in customIntArray.");
+        LOGGER.debug("Attempt to find minimum value in customIntArray.");
 
         int min = customIntArray.get(0);
 
@@ -31,7 +31,7 @@ public final class CustomIntArrayCalculationImpl implements CustomIntArrayCalcul
 
     @Override
     public int findMax(final CustomIntArray customIntArray) throws CustomIntArrayException {
-        LOGGER.debug("Attempt to find a maximum value in customIntArray.");
+        LOGGER.debug("Attempt to find maximum value in customIntArray.");
 
         int max = customIntArray.get(0);
 
@@ -51,7 +51,7 @@ public final class CustomIntArrayCalculationImpl implements CustomIntArrayCalcul
 
     @Override
     public int calculateSum(final CustomIntArray customIntArray) throws CustomIntArrayException {
-        LOGGER.debug("Attempt to calculate the sum of an customIntArray.");
+        LOGGER.debug("Attempt to calculate sum of customIntArray.");
 
         int sum = 0;
         for (int i = 0; i < customIntArray.length(); i++) {
@@ -62,5 +62,17 @@ public final class CustomIntArrayCalculationImpl implements CustomIntArrayCalcul
 
         LOGGER.info("Sum calculated: {} for array size: {}", sum, customIntArray.length());
         return sum;
+    }
+
+    @Override
+    public int calculateAvg(final CustomIntArray customIntArray) throws CustomIntArrayException {
+        LOGGER.debug("Attempt to calculate avg of an customIntArray.");
+
+        final int customIntArraySum = calculateSum(customIntArray);
+        final int customIntArraySize = customIntArray.length();
+        final int avg = customIntArraySum / customIntArraySize;
+
+        LOGGER.info("Avg calculated: {} for array size: {}", avg, customIntArray.length());
+        return avg;
     }
 }

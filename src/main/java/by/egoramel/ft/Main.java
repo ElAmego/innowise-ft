@@ -13,10 +13,16 @@ public class Main {
     private final static Logger LOGGER = LogManager.getLogger(Main.class);
     public static void main(String[] args) throws CustomIntArrayException {
         final CustomIntArrayFactory customIntArrayFactory = new CustomIntArrayFactoryImpl();
-        final CustomIntArray customIntArray = customIntArrayFactory.createFromFileCustomIntArray(1L);
+        final CustomIntArray customIntArray = customIntArrayFactory.createFromFileCustomIntArray(4L);
+        final CustomIntArray customIntArray1 = customIntArrayFactory.createFromArrayCustomIntArray(new int[]{5, 10}, 2L);
+        final CustomIntArray customIntArray2 = customIntArrayFactory.createWithSizeCustomIntArray(1, 3L);
+        final CustomIntArray customIntArray3 = customIntArrayFactory.createFromArrayCustomIntArray(new int[]{5, 10, 11}, 1L);
         final CustomIntArrayRepository customIntArrayRepository = CustomIntArrayRepositoryImpl.getInstance();
 
         customIntArrayRepository.save(customIntArray);
-        LOGGER.info(customIntArrayRepository.findByMaxGreaterThan(5));
+        customIntArrayRepository.save(customIntArray1);
+        customIntArrayRepository.save(customIntArray2);
+        customIntArrayRepository.save(customIntArray3);
+        LOGGER.info(customIntArrayRepository.sortAllByLengthDesc());
     }
 }

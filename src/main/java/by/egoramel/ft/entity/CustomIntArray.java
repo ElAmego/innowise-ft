@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 @SuppressWarnings("unused")
-public class CustomIntArray {
+public final class CustomIntArray {
     private static final Logger LOGGER = LogManager.getLogger();
     private final int[] array;
     private final long id;
@@ -70,6 +70,7 @@ public class CustomIntArray {
     public String toString() {
         return new StringJoiner(", ", CustomIntArray.class.getSimpleName() + "[", "]")
                 .add("array=" + Arrays.toString(array))
+                .add("id=" + id)
                 .toString();
     }
 

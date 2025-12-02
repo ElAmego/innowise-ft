@@ -7,4 +7,5 @@ public interface CustomIntArrayCalculation {
     int findMin(final CustomIntArray customIntArray) throws CustomIntArrayException;
     int findMax(final CustomIntArray customIntArray) throws CustomIntArrayException;
     int calculateSum(final CustomIntArray customIntArray) throws CustomIntArrayException;
+    int calculateAvg(final CustomIntArray customIntArray) throws CustomIntArrayException;
 }

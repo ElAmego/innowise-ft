@@ -1,5 +1,7 @@
 package by.egoramel.ft.repository.impl;
 
+import by.egoramel.ft.comparator.CustomIntArrayIdComparator;
+import by.egoramel.ft.comparator.CustomIntArrayLengthComparator;
 import by.egoramel.ft.entity.CustomIntArray;
 import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.repository.CustomIntArrayRepository;
@@ -9,10 +11,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
+public final class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final CustomIntArrayRepositoryImpl INSTANCE = new CustomIntArrayRepositoryImpl();
     private final List<CustomIntArray> customIntArrayList = new ArrayList<>();
@@ -79,7 +82,7 @@ public class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
         final CustomIntArrayCalculation customIntArrayCalculation = new CustomIntArrayCalculationImpl();
 
         for (final CustomIntArray customIntArray: customIntArrayList) {
-            final int customIntArrayAvg = customIntArrayCalculation.calculateSum(customIntArray) / customIntArray.length();
+            final int customIntArrayAvg = customIntArrayCalculation.calculateAvg(customIntArray);
 
             if (customIntArrayAvg > necessaryAvg) {
                 result.add(customIntArray);
@@ -119,6 +122,45 @@ public class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
         }
 
         return result;
+    }
+
+    @Override
+    public List<CustomIntArray> sortAllByIdAsc() {
+        final List<CustomIntArray> customIntArrays = findAll();
+        final CustomIntArrayIdComparator customIntArrayIdComparator = new CustomIntArrayIdComparator();
+
+        customIntArrays.sort(customIntArrayIdComparator);
+        return customIntArrays;
+    }
+
+
+    @Override
+    public List<CustomIntArray> sortAllByIdDesc() {
+        final List<CustomIntArray> customIntArrays = findAll();
+        final CustomIntArrayIdComparator customIntArrayIdComparator = new CustomIntArrayIdComparator();
+        Comparator<CustomIntArray> reversedCustomIntArrayIdComparator = customIntArrayIdComparator.reversed();
+
+        customIntArrays.sort(reversedCustomIntArrayIdComparator);
+        return customIntArrays;
+    }
+
+    @Override
+    public List<CustomIntArray> sortAllByLengthAsc() {
+        final List<CustomIntArray> customIntArrays = findAll();
+        final CustomIntArrayLengthComparator customIntArrayLengthComparator = new CustomIntArrayLengthComparator();
+
+        customIntArrays.sort(customIntArrayLengthComparator);
+        return customIntArrays;
+    }
+
+    @Override
+    public List<CustomIntArray> sortAllByLengthDesc() {
+        final List<CustomIntArray> customIntArrays = findAll();
+        final CustomIntArrayLengthComparator customIntArrayLengthComparator = new CustomIntArrayLengthComparator();
+        final Comparator<CustomIntArray> reversedCustomIntArrayLengthComparator = customIntArrayLengthComparator.reversed();
+
+        customIntArrays.sort(reversedCustomIntArrayLengthComparator);
+        return customIntArrays;
     }
 
     public static CustomIntArrayRepositoryImpl getInstance() {

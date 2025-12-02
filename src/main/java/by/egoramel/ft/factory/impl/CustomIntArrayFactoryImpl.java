@@ -26,7 +26,7 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
         final boolean isValidate = customIntArrayValidator.minimumSizeValidation(size);
 
         if (!isValidate) {
-            throw new CustomIntArrayException("Attempt to create an array with the size < 1.");
+            throw new CustomIntArrayException("Attempt to create an array with the size < 0.");
         }
 
         return new CustomIntArray(size, id);

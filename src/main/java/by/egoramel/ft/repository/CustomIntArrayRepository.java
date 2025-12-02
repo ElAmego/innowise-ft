@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 public interface CustomIntArrayRepository {
-    void save(final CustomIntArray customIntArray) throws CustomIntArrayException;
+    void save (final CustomIntArray customIntArray) throws CustomIntArrayException;
     void remove (final CustomIntArray customIntArray) throws CustomIntArrayException;
     Optional<CustomIntArray> findCustomIntArrayById(final long id);
     List<CustomIntArray> findAll();
@@ -16,4 +16,8 @@ public interface CustomIntArrayRepository {
     List<CustomIntArray> findByAvgGreaterThan(int necessaryAvg) throws CustomIntArrayException;
     List<CustomIntArray> findByMaxGreaterThan(int necessaryMax) throws CustomIntArrayException;
     List<CustomIntArray> findByMinGreaterThan(int necessaryMin) throws CustomIntArrayException;
+    List<CustomIntArray> sortAllByIdAsc();
+    List<CustomIntArray> sortAllByIdDesc();
+    List<CustomIntArray> sortAllByLengthAsc();
+    List<CustomIntArray> sortAllByLengthDesc();
 }

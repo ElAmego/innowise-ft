@@ -12,7 +12,7 @@ public final class CustomIntArrayValidatorImpl implements CustomIntArrayValidato
         final int minSize = 0;
 
         if (size < minSize) {
-            LOGGER.error("Attempt to create an array with the size < 1: {}", size);
+            LOGGER.error("Attempt to create an array with size < 0: {}", size);
             return false;
         }
 
