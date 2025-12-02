@@ -4,25 +4,16 @@ import by.egoramel.ft.entity.CustomIntArray;
 import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.factory.CustomIntArrayFactory;
 import by.egoramel.ft.factory.impl.CustomIntArrayFactoryImpl;
-import by.egoramel.ft.repository.CustomIntArrayRepository;
-import by.egoramel.ft.repository.impl.CustomIntArrayRepositoryImpl;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import by.egoramel.ft.warehouse.CustomIntArrayWarehouse;
+import by.egoramel.ft.warehouse.impl.CustomIntArrayWarehouseImpl;
 
 public class Main {
-    private final static Logger LOGGER = LogManager.getLogger(Main.class);
     public static void main(String[] args) throws CustomIntArrayException {
         final CustomIntArrayFactory customIntArrayFactory = new CustomIntArrayFactoryImpl();
-        final CustomIntArray customIntArray = customIntArrayFactory.createFromFileCustomIntArray(4L);
-        final CustomIntArray customIntArray1 = customIntArrayFactory.createFromArrayCustomIntArray(new int[]{5, 10}, 2L);
-        final CustomIntArray customIntArray2 = customIntArrayFactory.createWithSizeCustomIntArray(1, 3L);
-        final CustomIntArray customIntArray3 = customIntArrayFactory.createFromArrayCustomIntArray(new int[]{5, 10, 11}, 1L);
-        final CustomIntArrayRepository customIntArrayRepository = CustomIntArrayRepositoryImpl.getInstance();
-
-        customIntArrayRepository.save(customIntArray);
-        customIntArrayRepository.save(customIntArray1);
-        customIntArrayRepository.save(customIntArray2);
-        customIntArrayRepository.save(customIntArray3);
-        LOGGER.info(customIntArrayRepository.sortAllByLengthDesc());
+        final CustomIntArrayWarehouse customIntArrayWarehouseImpl = CustomIntArrayWarehouseImpl.getInstance();
+        final CustomIntArray customIntArray = customIntArrayFactory.createFromFileCustomIntArray(1L);
+        System.out.println(customIntArrayWarehouseImpl.getStorage().values());
+        customIntArray.set(0, -10);
+        System.out.println(customIntArrayWarehouseImpl.getStorage().values());
     }
 }

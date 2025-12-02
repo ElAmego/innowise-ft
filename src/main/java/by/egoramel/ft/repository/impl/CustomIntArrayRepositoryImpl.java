@@ -4,9 +4,12 @@ import by.egoramel.ft.comparator.CustomIntArrayIdComparator;
 import by.egoramel.ft.comparator.CustomIntArrayLengthComparator;
 import by.egoramel.ft.entity.CustomIntArray;
 import by.egoramel.ft.exception.CustomIntArrayException;
+import by.egoramel.ft.observer.CustomIntArrayObserver;
 import by.egoramel.ft.repository.CustomIntArrayRepository;
 import by.egoramel.ft.service.CustomIntArrayCalculation;
 import by.egoramel.ft.service.impl.CustomIntArrayCalculationImpl;
+import by.egoramel.ft.warehouse.CustomIntArrayWarehouse;
+import by.egoramel.ft.warehouse.impl.CustomIntArrayWarehouseImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,14 +18,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public final class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
+public final class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository, CustomIntArrayObserver {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final CustomIntArrayRepositoryImpl INSTANCE = new CustomIntArrayRepositoryImpl();
+    private static final CustomIntArrayRepository INSTANCE = new CustomIntArrayRepositoryImpl();
+    private final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
     private final List<CustomIntArray> customIntArrayList = new ArrayList<>();
-
-    private CustomIntArrayRepositoryImpl() {
-
-    }
 
     @Override
     public void save(final CustomIntArray customIntArray) throws CustomIntArrayException {
@@ -32,7 +32,10 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
         if (existingCustomIntArray.isPresent()) {
             throw new CustomIntArrayException("Array already exists.");
         } else {
+            customIntArray.addCustomIntArrayObserver(this);
+            customIntArray.addCustomIntArrayObserver(customIntArrayWarehouse);
             customIntArrayList.add(customIntArray);
+            customIntArrayWarehouse.addInitialData(customIntArray);
         }
     }
 
@@ -42,7 +45,10 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
         final Optional<CustomIntArray> existingCustomIntArray = findCustomIntArrayById(customIntArrayId);
 
         if (existingCustomIntArray.isPresent()) {
+            customIntArray.removeCustomIntArrayObserver(this);
+            customIntArray.removeCustomIntArrayObserver(customIntArrayWarehouse);
             customIntArrayList.remove(existingCustomIntArray.get());
+            customIntArrayWarehouse.removeData(customIntArrayId);
         } else {
             throw new CustomIntArrayException("Array doesn't exist.");
         }
@@ -163,7 +169,16 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
         return customIntArrays;
     }
 
-    public static CustomIntArrayRepositoryImpl getInstance() {
+    public static CustomIntArrayRepository getInstance() {
         return INSTANCE;
+    }
+
+    private CustomIntArrayRepositoryImpl() {
+
+    }
+
+    @Override
+    public void onCustomIntArrayChanged(final CustomIntArray customIntArray) {
+        LOGGER.debug("Repository notified about change in array ID: {}.", customIntArray.getId());
     }
 }

@@ -1,15 +1,20 @@
 package by.egoramel.ft.entity;
 
 import by.egoramel.ft.exception.CustomIntArrayException;
+import by.egoramel.ft.observer.CustomIntArrayObservable;
+import by.egoramel.ft.observer.CustomIntArrayObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 
 @SuppressWarnings("unused")
-public final class CustomIntArray {
+public final class CustomIntArray implements CustomIntArrayObservable {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final List<CustomIntArrayObserver> observers = new ArrayList<>();
     private final int[] array;
     private final long id;
 
@@ -45,6 +50,7 @@ public final class CustomIntArray {
 
         LOGGER.info("Successfully set value by index: {}", index);
         array[index] = value;
+        notifyCustomIntArrayObservers(this);
     }
 
     public int length() {
@@ -74,6 +80,29 @@ public final class CustomIntArray {
                 .toString();
     }
 
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void addCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver) {
+        if (customIntArrayObserver != null && !observers.contains(customIntArrayObserver)) {
+            observers.add(customIntArrayObserver);
+        }
+    }
+
+    @Override
+    public void removeCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver) {
+        observers.remove(customIntArrayObserver);
+    }
+
+    @Override
+    public void notifyCustomIntArrayObservers(final CustomIntArray CustomIntArray) throws CustomIntArrayException {
+        for (final CustomIntArrayObserver customIntArrayObserver : observers) {
+            customIntArrayObserver.onCustomIntArrayChanged(CustomIntArray);
+        }
+    }
+
     private boolean boundsValidator (final int index, final int arrayLength) {
         LOGGER.debug("Validating array bounds.");
 
@@ -84,13 +113,5 @@ public final class CustomIntArray {
         }
 
         return true;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public int[] getArray() {
-        return array;
     }
 }
