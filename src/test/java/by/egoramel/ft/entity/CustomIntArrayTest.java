@@ -24,22 +24,22 @@ class CustomIntArrayTest {
 
     @Test
     @DisplayName("Should correctly set a value by the definite index.")
-    void setValue() throws CustomIntArrayException {
-        final CustomIntArray array = customIntArrayFactory.createWithSizeCustomIntArray(5);
+    void shouldSetCorrectValue() throws CustomIntArrayException {
+        final CustomIntArray array = customIntArrayFactory.createWithSizeCustomIntArray(5, 1L);
         final int expect = 501;
         final int index = 2;
 
         array.set(index, expect);
         final int actual = array.get(2);
 
-        assertEquals(expect, actual, "The value should be equal 5.");
+        assertEquals(expect, actual, "The value should be equal 501.");
     }
 
     @Test
     @DisplayName("Should correctly get a value by the definite index.")
-    void getValue() throws CustomIntArrayException {
+    void shouldGetCorrectValue() throws CustomIntArrayException {
         final int[] initialArray = {22, 19, 0};
-        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray);
+        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray, 2L);
         final int expect = 22;
 
         final int actual = array.get(0);
@@ -49,9 +49,9 @@ class CustomIntArrayTest {
 
     @Test
     @DisplayName("Should correctly get a length of the array.")
-    void getLength() throws CustomIntArrayException {
+    void shouldGetCorrectLength() throws CustomIntArrayException {
         final int[] initialArray = {-5, 1};
-        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray);
+        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(initialArray, 3L);
         final int expect = 2;
 
         final int actual = array.length();

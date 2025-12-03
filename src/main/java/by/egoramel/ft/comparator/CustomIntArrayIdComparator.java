@@ -8,6 +8,8 @@ public final class CustomIntArrayIdComparator implements Comparator<CustomIntArr
 
     @Override
     public int compare(final CustomIntArray arr1, final CustomIntArray arr2) {
-        return Long.compare(arr1.getId(), arr2.getId());
+        final long arr1Id = arr1.getId();
+        final long arr2Id = arr2.getId();
+        return Long.compare(arr1Id, arr2Id);
     }
 }

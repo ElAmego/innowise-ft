@@ -17,7 +17,7 @@ public class FileParserImpl implements FileParser {
 
     @Override
     public List<String> parseRow() throws CustomIntArrayException {
-        LOGGER.info("Starting to read file: {}", fileUrl);
+        LOGGER.info("Starting to read file: {}.", fileUrl);
 
         final Path path = Paths.get(fileUrl);
         final List<String> rowList;

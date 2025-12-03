@@ -20,4 +20,5 @@ public interface CustomIntArrayRepository {
     List<CustomIntArray> sortAllByIdDesc();
     List<CustomIntArray> sortAllByLengthAsc();
     List<CustomIntArray> sortAllByLengthDesc();
+    int getRepositorySize();
 }

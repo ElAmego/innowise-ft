@@ -7,6 +7,8 @@ import java.util.Comparator;
 public final class CustomIntArrayLengthComparator implements Comparator<CustomIntArray> {
     @Override
     public int compare(final CustomIntArray arr1, final CustomIntArray arr2) {
-        return Integer.compare(arr1.length(), arr2.length());
+        final int arr1Length = arr1.length();
+        final int arr2Length = arr2.length();
+        return Integer.compare(arr1Length, arr2Length);
     }
 }

@@ -32,8 +32,13 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
             throw new CustomIntArrayException("Attempt to create an array with the size < 0.");
         }
 
+
+        LOGGER.trace("Creating CustomIntArray with size {} and ID {}.", size, id);
         final CustomIntArray customIntArray = new CustomIntArray(size, id);
+
+        LOGGER.debug("Saving CustomIntArray with ID {} to repository.", id);
         customIntArrayRepository.save(customIntArray);
+
         return customIntArray;
     }
 
@@ -48,8 +53,12 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
             throw new CustomIntArrayException("Attempt to create a CustomIntArray from an empty or null array.");
         }
 
+        LOGGER.trace("Creating CustomIntArray from array with ID {}.", id);
         final CustomIntArray customIntArray = new CustomIntArray(initialArray, id);
+
+        LOGGER.debug("Saving CustomIntArray from array with ID {} to repository.", id);
         customIntArrayRepository.save(customIntArray);
+
         return customIntArray;
     }
 
@@ -57,16 +66,20 @@ public final class CustomIntArrayFactoryImpl implements CustomIntArrayFactory {
         LOGGER.debug("Attempt to create CustomIntArray from a file.");
 
         final FileParser fileParser = new FileParserImpl();
+        LOGGER.trace("Parsing file.");
+
         final List<String> stringList = fileParser.parseRow();
         final ListParser listParser = new ListParserImpl();
 
         LOGGER.debug("Parsing data from a string list.");
         final int[] arrayFromFile = listParser.parseData(stringList);
 
-        LOGGER.info("CustomIntArray created successfully from a file. Array size: {}", arrayFromFile.length);
+        LOGGER.info("CustomIntArray created successfully from a file. Array size: {}.", arrayFromFile.length);
 
         final CustomIntArray customIntArray = new CustomIntArray(arrayFromFile, id);
+        LOGGER.debug("Saving file-based CustomIntArray with ID {} to repository.", id);
         customIntArrayRepository.save(customIntArray);
+
         return customIntArray;
     }
 }
