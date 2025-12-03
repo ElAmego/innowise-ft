@@ -40,6 +40,7 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
         LOGGER.info("Warehouse updated statistics for array ID: {}", id);
     }
 
+    @Override
     public void addInitialData(final CustomIntArray customIntArray) throws CustomIntArrayException {
         LOGGER.debug("Adding initial data to warehouse for array ID: {}.", customIntArray.getId());
         updateData(customIntArray);
@@ -54,11 +55,6 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
     public static CustomIntArrayWarehouse getInstance() {
         LOGGER.trace("Getting Warehouse singleton instance.");
         return INSTANCE;
-    }
-
-    public Map<Long, CustomIntArrayData> getStorage() {
-        LOGGER.trace("Getting Warehouse storage.");
-        return Map.copyOf(storage);
     }
 
     private CustomIntArrayWarehouseImpl() {

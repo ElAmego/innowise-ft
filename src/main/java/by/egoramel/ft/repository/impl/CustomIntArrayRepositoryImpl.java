@@ -167,7 +167,6 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
         return customIntArrays;
     }
 
-
     @Override
     public List<CustomIntArray> sortAllByIdDesc() {
         LOGGER.debug("Sorting all arrays by ID descending.");
@@ -200,13 +199,14 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
         return customIntArrays;
     }
 
+    @Override
+    public int getRepositorySize() {
+        return customIntArrayList.size();
+    }
+
     public static CustomIntArrayRepository getInstance() {
         LOGGER.trace("Getting Repository singleton instance.");
         return INSTANCE;
-    }
-
-    public int getRepositorySize() {
-        return customIntArrayList.size();
     }
 
     private CustomIntArrayRepositoryImpl() {
