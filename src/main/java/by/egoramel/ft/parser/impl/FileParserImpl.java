@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class FileParserImpl implements FileParser {
+public final class FileParserImpl implements FileParser {
     private static final Logger LOGGER = LogManager.getLogger();
     private final String fileUrl = "data/parameters.txt";
 

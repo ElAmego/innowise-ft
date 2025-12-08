@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ListParserImpl implements ListParser {
+public final class ListParserImpl implements ListParser {
     private static final Logger LOGGER = LogManager.getLogger();
     private final String WHOLE_NUMBER_REGEX = "\\b\\d+\\b";
 
