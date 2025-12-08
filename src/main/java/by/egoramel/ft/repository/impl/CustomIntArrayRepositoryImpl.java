@@ -4,6 +4,8 @@ import by.egoramel.ft.comparator.CustomIntArrayIdComparator;
 import by.egoramel.ft.comparator.CustomIntArrayLengthComparator;
 import by.egoramel.ft.entity.CustomIntArray;
 import by.egoramel.ft.exception.CustomIntArrayException;
+import by.egoramel.ft.observer.CustomIntArrayObserver;
+import by.egoramel.ft.observer.impl.CustomIntArrayObserverImpl;
 import by.egoramel.ft.repository.CustomIntArrayRepository;
 import by.egoramel.ft.service.CustomIntArrayCalculation;
 import by.egoramel.ft.service.impl.CustomIntArrayCalculationImpl;
@@ -19,9 +21,17 @@ import java.util.Optional;
 
 public final class CustomIntArrayRepositoryImpl implements CustomIntArrayRepository {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final CustomIntArrayRepository INSTANCE = new CustomIntArrayRepositoryImpl();
-    private final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
+    private static final CustomIntArrayRepository instance = new CustomIntArrayRepositoryImpl();
     private final List<CustomIntArray> customIntArrayList = new ArrayList<>();
+
+    public static CustomIntArrayRepository getInstance() {
+        LOGGER.trace("Getting Repository singleton instance.");
+        return instance;
+    }
+
+    private CustomIntArrayRepositoryImpl() {
+
+    }
 
     @Override
     public void save(final CustomIntArray customIntArray) throws CustomIntArrayException {
@@ -30,31 +40,29 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
 
         final Optional<CustomIntArray> existingCustomIntArray = findCustomIntArrayById(customIntArrayId);
 
-        if (existingCustomIntArray.isPresent()) {
-            LOGGER.error("Failed to save: array with ID {} already exist.", customIntArrayId);
-            throw new CustomIntArrayException("Array already exists.");
-        } else {
+        if (existingCustomIntArray.isEmpty()) {
             LOGGER.trace("Registering warehouse as observer for array ID: {}.", customIntArrayId);
-            customIntArray.addCustomIntArrayObserver(customIntArrayWarehouse);
+            final CustomIntArrayObserver customIntArrayObserver = new CustomIntArrayObserverImpl();
+            customIntArray.addCustomIntArrayObserver(customIntArrayObserver);
 
             LOGGER.debug("Adding array with ID {} to repository list.", customIntArrayId);
             customIntArrayList.add(customIntArray);
-
-            LOGGER.trace("Initializing warehouse data for array ID: {}.", customIntArrayId);
-            customIntArrayWarehouse.addInitialData(customIntArray);
+        } else {
+            LOGGER.error("Failed to save: array with ID {} already exist.", customIntArrayId);
+            throw new CustomIntArrayException("Array already exists.");
         }
     }
 
     @Override
     public void remove(final CustomIntArray customIntArray) throws CustomIntArrayException {
+        final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
         final long customIntArrayId = customIntArray.getId();
-
         LOGGER.debug("Attempting to remove CustomIntArray with ID: {}.", customIntArrayId);
         final Optional<CustomIntArray> existingCustomIntArray = findCustomIntArrayById(customIntArrayId);
 
         if (existingCustomIntArray.isPresent()) {
             LOGGER.trace("Removing warehouse observer from array ID: {}.", customIntArrayId);
-            customIntArray.removeCustomIntArrayObserver(customIntArrayWarehouse);
+            customIntArray.removeCustomIntArrayObserver();
 
             LOGGER.debug("Removing array with ID {} from repository list.", customIntArrayId);
             customIntArrayList.remove(existingCustomIntArray.get());
@@ -202,14 +210,5 @@ public final class CustomIntArrayRepositoryImpl implements CustomIntArrayReposit
     @Override
     public int getRepositorySize() {
         return customIntArrayList.size();
-    }
-
-    public static CustomIntArrayRepository getInstance() {
-        LOGGER.trace("Getting Repository singleton instance.");
-        return INSTANCE;
-    }
-
-    private CustomIntArrayRepositoryImpl() {
-
     }
 }

@@ -6,17 +6,15 @@ import by.egoramel.ft.observer.CustomIntArrayObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.StringJoiner;
 
 @SuppressWarnings("unused")
 public final class CustomIntArray implements CustomIntArrayObservable {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final List<CustomIntArrayObserver> observers = new ArrayList<>();
-    private final int[] array;
     private final long id;
+    private final int[] array;
+    public CustomIntArrayObserver customIntArrayObserver;
 
     public CustomIntArray(final int size, final long id) {
         LOGGER.info("Successful CustomIntArray creation with size: {}.", size);
@@ -56,7 +54,7 @@ public final class CustomIntArray implements CustomIntArrayObservable {
 
         LOGGER.info("Successfully set value by index: {}", index);
         array[index] = value;
-        LOGGER.debug("Notifying observers for array ID: {}. Observer count: {}.", id, observers.size());
+        LOGGER.debug("Notifying observer for array ID: {}.", id);
         notifyCustomIntArrayObservers(this);
     }
 
@@ -65,45 +63,40 @@ public final class CustomIntArray implements CustomIntArrayObservable {
         return array.length;
     }
 
+    public long getId() {
+        LOGGER.trace("Getting ID of array: {}.", id);
+        return id;
+    }
+
     @Override
-    public void addCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver) {
+    public void addCustomIntArrayObserver(final CustomIntArrayObserver observer) {
         LOGGER.debug("Adding observer to array ID: {}.", id);
-        if (customIntArrayObserver != null && !observers.contains(customIntArrayObserver)) {
-            observers.add(customIntArrayObserver);
+        if (customIntArrayObserver == null) {
+            customIntArrayObserver = observer;
+            initializeObserverData(observer);
             LOGGER.info("Observer added to array ID: {}.", id);
         }
     }
 
+    private void initializeObserverData(final CustomIntArrayObserver observer) {
+        LOGGER.debug("Initializing warehouse data for array ID: {}.", id);
+        observer.onCustomIntArrayChanged(this);
+    }
+
     @Override
-    public void removeCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver) {
-        observers.remove(customIntArrayObserver);
+    public void removeCustomIntArrayObserver() {
+        customIntArrayObserver = null;
         LOGGER.info("Observer removed from array ID: {}.", id);
     }
 
     @Override
-    public void notifyCustomIntArrayObservers(final CustomIntArray CustomIntArray) throws CustomIntArrayException {
-        LOGGER.debug("Notifying observers for array ID: {}.", id);
-        for (final CustomIntArrayObserver customIntArrayObserver : observers) {
-            customIntArrayObserver.onCustomIntArrayChanged(CustomIntArray);
-            LOGGER.trace("Observer notified successfully.");
-        }
-    }
-
-    private boolean boundsValidator (final int index, final int arrayLength) {
-        LOGGER.debug("Validating array bounds.");
-
-        int minIndex = 0;
-        if (index >= arrayLength || index < minIndex) {
-            LOGGER.error("Index out of bound: {}", index);
-            return false;
-        }
-
-        LOGGER.trace("Bounds validation passed.");
-        return true;
+    public void notifyCustomIntArrayObservers(final CustomIntArray CustomIntArray) {
+        customIntArrayObserver.onCustomIntArrayChanged(CustomIntArray);
+        LOGGER.trace("Observer notified successfully.");
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -124,12 +117,16 @@ public final class CustomIntArray implements CustomIntArrayObservable {
                 .toString();
     }
 
-    public long getId() {
-        LOGGER.trace("Getting ID of array: {}.", id);
-        return id;
-    }
+    private boolean boundsValidator (final int index, final int arrayLength) {
+        LOGGER.debug("Validating array bounds.");
 
-    public int[] getArray() {
-        return array.clone();
+        int minIndex = 0;
+        if (index >= arrayLength || index < minIndex) {
+            LOGGER.error("Index out of bound: {}", index);
+            return false;
+        }
+
+        LOGGER.trace("Bounds validation passed.");
+        return true;
     }
 }

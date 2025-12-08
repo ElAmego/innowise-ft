@@ -5,6 +5,6 @@ import by.egoramel.ft.exception.CustomIntArrayException;
 
 public interface CustomIntArrayObservable {
     void addCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver);
-    void removeCustomIntArrayObserver(final CustomIntArrayObserver customIntArrayObserver);
+    void removeCustomIntArrayObserver();
     void notifyCustomIntArrayObservers(final CustomIntArray customIntArray) throws CustomIntArrayException;
 }
