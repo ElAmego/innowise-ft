@@ -5,25 +5,19 @@ import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.factory.CustomIntArrayFactory;
 import by.egoramel.ft.factory.impl.CustomIntArrayFactoryImpl;
 import by.egoramel.ft.service.CustomIntArrayCalculation;
-import by.egoramel.ft.service.CustomIntArraySort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomIntArrayCalculationImplTest {
     private CustomIntArrayCalculation customIntArrayCalculation;
-    private CustomIntArraySort customIntArraySort;
     private CustomIntArrayFactory customIntArrayFactory;
 
     @BeforeEach
     void setUp() {
         customIntArrayCalculation = new CustomIntArrayCalculationImpl();
-        customIntArraySort = new CustomIntArraySortImpl();
         customIntArrayFactory = new CustomIntArrayFactoryImpl();
     }
 
@@ -65,35 +59,5 @@ class CustomIntArrayCalculationImplTest {
         final int actual = customIntArrayCalculation.calculateSum(array);
 
         assertEquals(expect, actual, "Sum should be 501");
-    }
-
-    @Test
-    @DisplayName("Should correctly sort an array by Bubble sort.")
-    void checkBubbleSort() throws CustomIntArrayException {
-        final int[] testData = {-2, 5, -10, 22, 13};
-        final int[] expect = {-10, -2, 5, 13, 22};
-        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData, 4L);
-        final String expectResult = Arrays.toString(expect);
-
-        final CustomIntArray sortedCustomIntArray = customIntArraySort.bubbleSort(array);
-        final int[] sortedArray = sortedCustomIntArray.getArray();
-        final String result = Arrays.toString(sortedArray);
-
-        assertEquals(expectResult, result, "Correct sort: [-10, -2, 5, 13, 22]");
-    }
-
-    @Test
-    @DisplayName("Should correctly sort an array by Selection sort.")
-    void checkSelectionSort() throws CustomIntArrayException {
-        final int[] testData = {23, -5, 0, 11, 6};
-        final int[] expect = {-5, 0, 6, 11, 23};
-        final CustomIntArray array = customIntArrayFactory.createFromArrayCustomIntArray(testData, 5L);
-        final String expectResult = Arrays.toString(expect);
-
-        final CustomIntArray sortedCustomIntArray = customIntArraySort.bubbleSort(array);
-        final int[] sortedArray = sortedCustomIntArray.getArray();
-        final String result = Arrays.toString(sortedArray);
-
-        assertEquals(expectResult, result, "Correct sort: [-5, 0, 6, 11, 23]");
     }
 }

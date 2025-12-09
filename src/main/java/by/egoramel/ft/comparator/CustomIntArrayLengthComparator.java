@@ -4,6 +4,7 @@ import by.egoramel.ft.entity.CustomIntArray;
 
 import java.util.Comparator;
 
+@SuppressWarnings("unused")
 public final class CustomIntArrayLengthComparator implements Comparator<CustomIntArray> {
     @Override
     public int compare(final CustomIntArray arr1, final CustomIntArray arr2) {
