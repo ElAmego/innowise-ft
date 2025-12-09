@@ -4,6 +4,7 @@ import by.egoramel.ft.entity.CustomIntArray;
 
 import java.util.Comparator;
 
+@SuppressWarnings("unused")
 public final class CustomIntArrayIdComparator implements Comparator<CustomIntArray> {
 
     @Override

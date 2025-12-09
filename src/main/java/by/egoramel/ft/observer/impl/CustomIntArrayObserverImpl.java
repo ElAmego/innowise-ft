@@ -2,7 +2,6 @@ package by.egoramel.ft.observer.impl;
 
 import by.egoramel.ft.entity.CustomIntArray;
 import by.egoramel.ft.entity.CustomIntArrayData;
-import by.egoramel.ft.exception.CustomIntArrayException;
 import by.egoramel.ft.observer.CustomIntArrayObserver;
 import by.egoramel.ft.service.CustomIntArrayCalculation;
 import by.egoramel.ft.service.impl.CustomIntArrayCalculationImpl;
@@ -20,17 +19,13 @@ public final class CustomIntArrayObserverImpl implements CustomIntArrayObserver 
         final long id = customIntArray.getId();
         LOGGER.debug("Calculating data for array ID: {}.", id);
 
-        try {
-            final int max = customIntArrayCalculation.findMax(customIntArray);
-            final int min = customIntArrayCalculation.findMin(customIntArray);
-            final int avg = customIntArrayCalculation.calculateAvg(customIntArray);
-            final int sum = customIntArrayCalculation.calculateSum(customIntArray);
+        final int max = customIntArrayCalculation.findMax(customIntArray);
+        final int min = customIntArrayCalculation.findMin(customIntArray);
+        final int avg = customIntArrayCalculation.calculateAvg(customIntArray);
+        final int sum = customIntArrayCalculation.calculateSum(customIntArray);
 
-            final CustomIntArrayData customIntArrayData = new CustomIntArrayData(max, min, avg, sum);
-            final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
-            customIntArrayWarehouse.addData(id, customIntArrayData);
-        } catch (final CustomIntArrayException customIntArrayException) {
-            LOGGER.error("Unable to calculate data for array ID: {}.", id);
-        }
+        final CustomIntArrayData customIntArrayData = new CustomIntArrayData(max, min, avg, sum);
+        final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
+        customIntArrayWarehouse.put(id, customIntArrayData);
     }
 }

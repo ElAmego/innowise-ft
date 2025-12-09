@@ -23,7 +23,7 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
     }
 
     @Override
-    public void addData(final long id, final CustomIntArrayData customIntArrayData) {
+    public void put(final long id, final CustomIntArrayData customIntArrayData) {
         storage.put(id, customIntArrayData);
         LOGGER.info("Warehouse updated statistics for array ID: {}", id);
     }
@@ -32,10 +32,5 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
     public void removeData(final long id) {
         LOGGER.debug("Removing data by ID: {}.", id);
         storage.remove(id);
-    }
-
-    @Override
-    public Map<Long, CustomIntArrayData> getMap() {
-        return storage;
     }
 }
