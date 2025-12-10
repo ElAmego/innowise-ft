@@ -35,7 +35,7 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
     }
 
     @Override
-    public CustomIntArrayData getData(long id) {
+    public CustomIntArrayData getData(final long id) {
         return storage.get(id);
     }
 }
