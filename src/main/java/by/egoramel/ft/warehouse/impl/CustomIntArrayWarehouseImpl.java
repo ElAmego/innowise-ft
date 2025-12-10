@@ -33,4 +33,9 @@ public final class CustomIntArrayWarehouseImpl implements CustomIntArrayWarehous
         LOGGER.debug("Removing data by ID: {}.", id);
         storage.remove(id);
     }
+
+    @Override
+    public CustomIntArrayData getData(long id) {
+        return storage.get(id);
+    }
 }
