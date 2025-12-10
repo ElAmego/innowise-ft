@@ -12,7 +12,7 @@ public final class FindByIdSpecification implements Specification {
     }
 
     @Override
-    public boolean matches(final CustomIntArray CustomIntArray) {
-        return CustomIntArray.getId() == necessaryId;
+    public boolean matches(final CustomIntArray customIntArray) {
+        return customIntArray.getId() == necessaryId;
     }
 }

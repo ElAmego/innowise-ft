@@ -1,9 +1,10 @@
 package by.egoramel.ft.specification.impl;
 
 import by.egoramel.ft.entity.CustomIntArray;
-import by.egoramel.ft.service.CustomIntArrayCalculation;
-import by.egoramel.ft.service.impl.CustomIntArrayCalculationImpl;
+import by.egoramel.ft.entity.CustomIntArrayData;
 import by.egoramel.ft.specification.Specification;
+import by.egoramel.ft.warehouse.CustomIntArrayWarehouse;
+import by.egoramel.ft.warehouse.impl.CustomIntArrayWarehouseImpl;
 
 @SuppressWarnings("unused")
 public final class FindByMaxGreaterThanSpecification implements Specification {
@@ -14,9 +15,11 @@ public final class FindByMaxGreaterThanSpecification implements Specification {
     }
 
     @Override
-    public boolean matches(final CustomIntArray CustomIntArray) {
-        final CustomIntArrayCalculation customIntArrayCalculation = new CustomIntArrayCalculationImpl();
-        final int customIntArrayMax = customIntArrayCalculation.findMax(CustomIntArray);
+    public boolean matches(final CustomIntArray customIntArray) {
+        final CustomIntArrayWarehouse customIntArrayWarehouse = CustomIntArrayWarehouseImpl.getInstance();
+        final long customIntArrayId = customIntArray.getId();
+        final CustomIntArrayData customIntArrayData = customIntArrayWarehouse.getData(customIntArrayId);
+        final int customIntArrayMax = customIntArrayData.max();
         return customIntArrayMax > necessaryMax;
     }
 }
